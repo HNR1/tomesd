@@ -55,7 +55,7 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         idx_buffer_view = torch.zeros(hsy, wsx, sy*sx, device=metric.device, dtype=torch.int64)
         idx_buffer_view.scatter_(dim=2, index=rand_idx, src=-torch.ones_like(rand_idx, dtype=rand_idx.dtype))
         idx_buffer_view = idx_buffer_view.view(hsy, wsx, sy, sx).transpose(1, 2).reshape(hsy * sy, wsx * sx)
-        print(idx_buffer_view.shape)
+        print(idx_buffer_view[:8,:8])
         # Image is not divisible by sx or sy so we need to move it into a new buffer
         if (hsy * sy) < h or (wsx * sx) < w:
             idx_buffer = torch.zeros(h, w, device=metric.device, dtype=torch.int64)
