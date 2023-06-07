@@ -82,8 +82,9 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
         # Cosine similarity between A and B
         metric = metric / metric.norm(dim=-1, keepdim=True)
+        print(metric.shpe)
         a, b = split(metric)
-        print(a[:,:4,:4], b[:,:4,:4])
+        #print(a[0,:3,:3], b[0,:3,:3])
         scores = a @ b.transpose(-1, -2)
 
         # Can't reduce more than the # tokens in src
