@@ -28,6 +28,8 @@ def compute_merge(x: torch.Tensor, tome_info: Dict[str, Any]) -> Tuple[Callable,
         # If the batch size is odd, then it's not possible for prompted and unprompted images to be in the same
         # batch, which causes artifacts with use_rand, so force it to be off.
         use_rand = False if x.shape[0] % 2 == 1 else args["use_rand"]
+        torch.set_printoptions(precision=7)
+        print('x', x[0,0,:3])
         m, u = merge.bipartite_soft_matching_random2d(x, w, h, args["sx"], args["sy"], r,
                                                       no_rand=not use_rand, generator=args["generator"])
     else:
