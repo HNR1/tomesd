@@ -65,7 +65,7 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
         # We set dst tokens to be -1 and src to be 0, so an argsort gives us dst|src indices
         rand_idx = idx_buffer.reshape(1, -1, 1).argsort(dim=1)
-        print(rand_idx[0,:8,0])
+
         # We're finished with these
         del idx_buffer, idx_buffer_view
 
@@ -83,7 +83,7 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         # Cosine similarity between A and B
         metric = metric / metric.norm(dim=-1, keepdim=True)
         a, b = split(metric)
-        print(a.shape, b.shape)
+        print(a[:,:4,:4], b[:,:4,:4])
         scores = a @ b.transpose(-1, -2)
 
         # Can't reduce more than the # tokens in src
