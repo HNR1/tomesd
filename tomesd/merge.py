@@ -50,12 +50,12 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
             rand_idx = torch.zeros(hsy, wsx, 1, device=metric.device, dtype=torch.int64)
         else:
             rand_idx = torch.randint(sy*sx, size=(hsy, wsx, 1), device=generator.device, generator=generator).to(metric.device)
-        #print(rand_idx[:8,:8,0])
+
         # The image might not divide sx and sy, so we need to work on a view of the top left if the idx buffer instead
         idx_buffer_view = torch.zeros(hsy, wsx, sy*sx, device=metric.device, dtype=torch.int64)
         idx_buffer_view.scatter_(dim=2, index=rand_idx, src=-torch.ones_like(rand_idx, dtype=rand_idx.dtype))
         idx_buffer_view = idx_buffer_view.view(hsy, wsx, sy, sx).transpose(1, 2).reshape(hsy * sy, wsx * sx)
-        #print(idx_buffer_view[:8,:8])
+
         # Image is not divisible by sx or sy so we need to move it into a new buffer
         if (hsy * sy) < h or (wsx * sx) < w:
             idx_buffer = torch.zeros(h, w, device=metric.device, dtype=torch.int64)
@@ -83,6 +83,7 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         # Cosine similarity between A and B
         metric = metric / metric.norm(dim=-1, keepdim=True)
         a, b = split(metric)
+        print(a.shape, b.shape)
         scores = a @ b.transpose(-1, -2)
 
         # Can't reduce more than the # tokens in src
