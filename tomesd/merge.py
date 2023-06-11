@@ -82,16 +82,17 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
         # Cosine similarity between A and B
         torch.set_printoptions(precision=7)
-        print('metric', metric[0,0,:3])
+        #print('metric', metric[0,0,:4])
         metric = metric / metric.norm(dim=-1, keepdim=True)
         a, b = split(metric)
         scores = a @ b.transpose(-1, -2)
-        print('score', scores[0,0,:3])
+        print('score', scores[0,0,:4])
         # Can't reduce more than the # tokens in src
         r = min(a.shape[1], r)
 
         # Find the most similar greedily
         node_max, node_idx = scores.max(dim=-1)
+        print('max', node_max, node_idx)
         edge_idx = node_max.argsort(dim=-1, descending=True)[..., None]
 
         unm_idx = edge_idx[..., r:, :]  # Unmerged Tokens
@@ -124,3 +125,20 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         return out
 
     return merge, unmerge
+
+
+hidden tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
+metric tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
+score tensor([0.7133359, 0.7488449, 0.6783174], device='cuda:0')
+hidden tensor([ 0.0516009, -0.8971322,  0.0351197], device='cuda:0')
+metric tensor([ 0.0516009, -0.8971322,  0.0351197], device='cuda:0')
+score tensor([0.7151189, 0.6919521, 0.7272021], device='cuda:0')
+hidden tensor([-0.1359317, -0.1188316,  0.1302417], device='cuda:0')
+
+hidden tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
+metric tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
+score tensor([0.7133359, 0.7488449, 0.6783174], device='cuda:0')
+hidden tensor([ 0.0516009, -0.8971320,  0.0351197], device='cuda:0')
+metric tensor([ 0.0516009, -0.8971320,  0.0351197], device='cuda:0')
+score tensor([0.7151190, 0.6919520, 0.7272018], device='cuda:0')
+hidden tensor([-0.1359322, -0.1188319,  0.1302420], device='cuda:0')
