@@ -126,19 +126,6 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
     return merge, unmerge
 
+'''
 
-hidden tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
-metric tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
-score tensor([0.7133359, 0.7488449, 0.6783174], device='cuda:0')
-hidden tensor([ 0.0516009, -0.8971322,  0.0351197], device='cuda:0')
-metric tensor([ 0.0516009, -0.8971322,  0.0351197], device='cuda:0')
-score tensor([0.7151189, 0.6919521, 0.7272021], device='cuda:0')
-hidden tensor([-0.1359317, -0.1188316,  0.1302417], device='cuda:0')
-
-hidden tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
-metric tensor([ 0.0954363,  0.3521819, -0.1353313], device='cuda:0')
-score tensor([0.7133359, 0.7488449, 0.6783174], device='cuda:0')
-hidden tensor([ 0.0516009, -0.8971320,  0.0351197], device='cuda:0')
-metric tensor([ 0.0516009, -0.8971320,  0.0351197], device='cuda:0')
-score tensor([0.7151190, 0.6919520, 0.7272018], device='cuda:0')
-hidden tensor([-0.1359322, -0.1188319,  0.1302420], device='cuda:0')
+'''
