@@ -121,11 +121,13 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
             hidden_states = u_a(attn_output) + hidden_states
 
             if self.attn2 is not None:
-                print(self.norm2)
+                #print(self.norm2)
+                torch.set_printoptions(precision=12)
+                print('self', self.norm2(hidden_states)[0,0,:3])
                 norm_hidden_states = (
                     self.norm2(hidden_states, timestep) if self.use_ada_layer_norm else self.norm2(hidden_states)
                 )
-
+                print('hid', norm_hidden_states[0,0,:3])
                 # (4) ToMe m_c
                 norm_hidden_states = m_c(norm_hidden_states)
 
