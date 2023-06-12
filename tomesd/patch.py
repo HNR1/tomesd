@@ -104,7 +104,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 )
             else:
                 norm_hidden_states = self.norm1(hidden_states)
-
+            print('norm_hidden', norm_hidden_states.shape)
             # (2) ToMe m_a
             norm_hidden_states = m_a(norm_hidden_states)
 
