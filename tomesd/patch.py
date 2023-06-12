@@ -92,8 +92,6 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
             class_labels=None,
         ) -> torch.Tensor:
             # (1) ToMe
-            torch.set_printoptions(precision=16)
-            #print('hidden',hidden_states[0,0,:3])
             m_a, m_c, m_m, u_a, u_c, u_m = compute_merge(hidden_states, self._tome_info)
 
             if self.use_ada_layer_norm:
@@ -123,11 +121,10 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
             hidden_states = u_a(attn_output) + hidden_states
 
             if self.attn2 is not None:
-                print('pre_n_hidden', norm_hidden_states[0,0,:6])
+                print(self.use_ada_layer_norm)
                 norm_hidden_states = (
                     self.norm2(hidden_states, timestep) if self.use_ada_layer_norm else self.norm2(hidden_states)
                 )
-                print('n_hidden', norm_hidden_states[0,0,:6])
 
                 # (4) ToMe m_c
                 norm_hidden_states = m_c(norm_hidden_states)
@@ -154,10 +151,10 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             if self.use_ada_layer_norm_zero:
                 ff_output = gate_mlp.unsqueeze(1) * ff_output
-            #print('hidden_pre_ret', hidden_states[0,0,:3])
+
             # (7) ToMe u_m
             hidden_states = u_m(ff_output) + hidden_states
-            #print('hidden_ret', hidden_states[0,0,:3])
+
             return hidden_states
 
     return ToMeBlock
