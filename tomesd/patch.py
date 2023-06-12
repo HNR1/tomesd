@@ -129,7 +129,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 )
                 # (4) ToMe m_c
                 norm_hidden_states = m_c(norm_hidden_states)
-
+                print('n_hidden', norm_hidden_states[0,0,:6])
                 # 2. Cross-Attention
                 attn_output = self.attn2(
                     norm_hidden_states,
@@ -138,7 +138,6 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                     **cross_attention_kwargs,
                 )
                 # (5) ToMe u_c
-                print('n_hidden', norm_hidden_states[0,0,:6])
                 hidden_states = u_c(attn_output) + hidden_states
 
             # 3. Feed-forward
