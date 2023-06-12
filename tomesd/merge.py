@@ -117,8 +117,8 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         out = torch.zeros(B, N, c, device=x.device, dtype=x.dtype)
         torch.set_printoptions(precision=8)
         out.scatter_(dim=-2, index=b_idx.expand(B, num_dst, c), src=dst)
-        print(dst.shape)
-        #print(out[0,:4,:4])
+        print(dst[0,0,:4])
+        print(out[0,:4,:4])
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=unm_idx).expand(B, unm_len, c), src=unm)
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=src_idx).expand(B, r, c), src=src)
 
