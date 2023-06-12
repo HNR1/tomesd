@@ -81,18 +81,15 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
             return src, dst
 
         # Cosine similarity between A and B
-        torch.set_printoptions(precision=12)
-        #print('metric', metric[0,0,:4])
         metric = metric / metric.norm(dim=-1, keepdim=True)
         a, b = split(metric)
         scores = a @ b.transpose(-1, -2)
-        print('score', scores[0,0,:4])
+
         # Can't reduce more than the # tokens in src
         r = min(a.shape[1], r)
 
         # Find the most similar greedily
         node_max, node_idx = scores.max(dim=-1)
-        print('max', node_max[0,100:104], node_idx[0,100:104])
         edge_idx = node_max.argsort(dim=-1, descending=True)[..., None]
 
         unm_idx = edge_idx[..., r:, :]  # Unmerged Tokens
@@ -118,6 +115,7 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
         # Combine back to the original shape
         out = torch.zeros(B, N, c, device=x.device, dtype=x.dtype)
+        print(out.shape)
         out.scatter_(dim=-2, index=b_idx.expand(B, num_dst, c), src=dst)
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=unm_idx).expand(B, unm_len, c), src=unm)
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=src_idx).expand(B, r, c), src=src)
@@ -127,11 +125,21 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
     return merge, unmerge
 
 '''
-max tensor([0.7330130, 0.5785772, 0.5666295, 0.5800563], device='cuda:0')
-tensor([36, 38, 39, 91], device='cuda:0')
-hidden tensor([ 0.0516011, -0.8971325,  0.0351195, -0.7181762], device='cuda:0')
+hidden tensor([ 0.095436334610,  0.352181911469, -0.135331332684, -0.005443044007],
+       device='cuda:0')
+score tensor([0.713335931301, 0.748844861984, 0.678317427635, 0.645105600357],
+       device='cuda:0')
+max tensor([0.733012974262, 0.578577220440, 0.566629528999, 0.580056309700],
+       device='cuda:0') tensor([36, 38, 39, 91], device='cuda:0')
+hidden tensor([ 0.051600951701, -0.897132217884,  0.035119742155, -0.718175709248],
+       device='cuda:0')
 
-max tensor([0.7330130, 0.5785772, 0.5666295, 0.5800563], device='cuda:0')
-tensor([36, 38, 39, 91], device='cuda:0')
-hidden tensor([ 0.0516011, -0.8971317,  0.0351197, -0.7181759], device='cuda:0')
+hidden tensor([ 0.095436334610,  0.352181911469, -0.135331332684, -0.005443044007],
+       device='cuda:0')
+score tensor([0.713335931301, 0.748844861984, 0.678317427635, 0.645105600357],
+       device='cuda:0')
+max tensor([0.733012974262, 0.578577220440, 0.566629528999, 0.580056309700],
+       device='cuda:0') tensor([36, 38, 39, 91], device='cuda:0')
+hidden tensor([ 0.051601175219, -0.897132217884,  0.035119637847, -0.718175947666],
+       device='cuda:0')
 '''
