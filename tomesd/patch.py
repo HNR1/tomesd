@@ -77,6 +77,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
     Make a patched class for a diffusers model.
     This patch applies ToMe to the forward function of the block.
     """
+    print(type(block_class))
     class ToMeBlock(block_class):
         # Save for unpatching later
         _parent = block_class
@@ -114,8 +115,6 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 attention_mask=attention_mask,
                 **cross_attention_kwargs,
             )
-            torch.set_printoptions(precision=12)
-            print('attn', attn_output[0,0,:6])
             if self.use_ada_layer_norm_zero:
                 attn_output = gate_msa.unsqueeze(1) * attn_output
 
