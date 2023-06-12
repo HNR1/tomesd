@@ -98,15 +98,17 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
     def merge(x: torch.Tensor, mode="mean") -> torch.Tensor:
         torch.set_printoptions(precision=10)
+        #print('merge', x[0,0,:4])
         src, dst = split(x)
-        print('merge', src[0,0,:4], dst[0,0,:4])
         n, t1, c = src.shape
 
         unm = gather(src, dim=-2, index=unm_idx.expand(n, t1 - r, c))
         src = gather(src, dim=-2, index=src_idx.expand(n, r, c))
         dst = dst.scatter_reduce(-2, dst_idx.expand(n, r, c), src, reduce=mode)
 
-        return torch.cat([unm, dst], dim=1)
+        r = torch.cat([unm, dst], dim=1)
+        print(r.shape)
+        return r
 
     def unmerge(x: torch.Tensor) -> torch.Tensor:
         unm_len = unm_idx.shape[1]
@@ -127,10 +129,10 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
 '''
 hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
-merge tensor([ 0.2386467755,  0.8510968089, -0.6407168508,  0.0218548737], device='cuda:0')
-unmerge tensor([ 0.1357084066, -0.1042568162,  0.1133588329, -0.0006547794], device='cuda:0')
+merge tensor([ 0.0699041337,  0.0953432918, -0.4092049003,  0.0362942331],
+      tensor([ 0.2386467755,  0.8510968089, -0.6407168508,  0.0218548737],
 
 hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
-merge tensor([ 0.2386467755,  0.8510968089, -0.6407168508,  0.0218548737],
-unmerge tensor([ 0.1357083917, -0.1042568237,  0.1133587956, -0.0006547868],
+merge tensor([ 0.0699041337,  0.0953432918, -0.4092049003,  0.0362942331],
+      tensor([ 0.2386467755,  0.8510968089, -0.6407168508,  0.0218548737],
 '''
