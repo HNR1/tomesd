@@ -121,6 +121,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             # (3) ToMe u_a
             hidden_states = u_a(attn_output) + hidden_states
+            print('pre_n_hidden', norm_hidden_states[0,0,:3])
 
             if self.attn2 is not None:
                 norm_hidden_states = (
@@ -138,7 +139,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 )
                 # (5) ToMe u_c
                 hidden_states = u_c(attn_output) + hidden_states
-            print('pre_n_hidden', norm_hidden_states[0,0,:3])
+            print('n_hidden', norm_hidden_states[0,0,:3])
             # 3. Feed-forward
             norm_hidden_states = self.norm3(hidden_states)
 
@@ -147,7 +148,6 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             # (6) ToMe m_m
             norm_hidden_states = m_m(norm_hidden_states)
-            print('n_hidden', norm_hidden_states[0,0,:3])
             ff_output = self.ff(norm_hidden_states)
 
             if self.use_ada_layer_norm_zero:
