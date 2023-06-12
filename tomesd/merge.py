@@ -117,7 +117,8 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         out = torch.zeros(B, N, c, device=x.device, dtype=x.dtype)
         torch.set_printoptions(precision=8)
         out.scatter_(dim=-2, index=b_idx.expand(B, num_dst, c), src=dst)
-        print(out[0,:4,:4])
+        print(dst.shape)
+        #print(out[0,:4,:4])
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=unm_idx).expand(B, unm_len, c), src=unm)
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=src_idx).expand(B, r, c), src=src)
 
@@ -126,21 +127,17 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
     return merge, unmerge
 
 '''
-hidden tensor([ 0.095436334610,  0.352181911469, -0.135331332684, -0.005443044007],
-       device='cuda:0')
-score tensor([0.713335931301, 0.748844861984, 0.678317427635, 0.645105600357],
-       device='cuda:0')
-max tensor([0.733012974262, 0.578577220440, 0.566629528999, 0.580056309700],
-       device='cuda:0') tensor([36, 38, 39, 91], device='cuda:0')
-hidden tensor([ 0.051600951701, -0.897132217884,  0.035119742155, -0.718175709248],
-       device='cuda:0')
+hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
+tensor([[ 0.13570842, -0.10425683,  0.11335882, -0.00065479],
+        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000],
+        [ 0.14703000, -0.07123703,  0.08285294, -0.01936748],
+        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000]], device='cuda:0')
+hidden tensor([ 0.05160071, -0.89713186,  0.03511934, -0.71817541], device='cuda:0')
 
-hidden tensor([ 0.095436334610,  0.352181911469, -0.135331332684, -0.005443044007],
-       device='cuda:0')
-score tensor([0.713335931301, 0.748844861984, 0.678317427635, 0.645105600357],
-       device='cuda:0')
-max tensor([0.733012974262, 0.578577220440, 0.566629528999, 0.580056309700],
-       device='cuda:0') tensor([36, 38, 39, 91], device='cuda:0')
-hidden tensor([ 0.051601175219, -0.897132217884,  0.035119637847, -0.718175947666],
-       device='cuda:0')
+hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
+tensor([[ 0.13570842, -0.10425681,  0.11335881, -0.00065478],
+        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000],
+        [ 0.14703000, -0.07123703,  0.08285293, -0.01936747],
+        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000]], device='cuda:0')
+hidden tensor([ 0.05160107, -0.89713150,  0.03511929, -0.71817595], device='cuda:0')
 '''
