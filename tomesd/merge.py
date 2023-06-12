@@ -106,9 +106,9 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         src = gather(src, dim=-2, index=src_idx.expand(n, r, c))
         dst = dst.scatter_reduce(-2, dst_idx.expand(n, r, c), src, reduce=mode)
 
-        r = torch.cat([unm, dst], dim=1)
-        print(r.shape)
-        return r
+        ret = torch.cat([unm, dst], dim=1)
+        print(ret.shape)
+        return ret
 
     def unmerge(x: torch.Tensor) -> torch.Tensor:
         unm_len = unm_idx.shape[1]
