@@ -147,14 +147,13 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             # (6) ToMe m_m
             norm_hidden_states = m_m(norm_hidden_states)
-
+            print('n_hidden', norm_hidden_states[0,0,:3])
             ff_output = self.ff(norm_hidden_states)
-
+            print('ff_out', ff_output[0,0,:3])
             if self.use_ada_layer_norm_zero:
                 ff_output = gate_mlp.unsqueeze(1) * ff_output
             #print('hidden_pre_ret', hidden_states[0,0,:3])
             # (7) ToMe u_m
-            print(ff_output[0,0,:3])
             hidden_states = u_m(ff_output) + hidden_states
             #print('hidden_ret', hidden_states[0,0,:3])
             return hidden_states
