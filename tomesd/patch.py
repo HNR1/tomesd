@@ -104,10 +104,10 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 )
             else:
                 norm_hidden_states = self.norm1(hidden_states)
-            print('norm_hidden', norm_hidden_states[0,0,:3])
+
             # (2) ToMe m_a
             norm_hidden_states = m_a(norm_hidden_states)
-
+            print('norm_hidden', norm_hidden_states[0,0,:3])
             # 1. Self-Attention
             cross_attention_kwargs = cross_attention_kwargs if cross_attention_kwargs is not None else {}
             attn_output = self.attn1(
