@@ -81,7 +81,7 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
             return src, dst
 
         # Cosine similarity between A and B
-        torch.set_printoptions(precision=7)
+        torch.set_printoptions(precision=12)
         #print('metric', metric[0,0,:4])
         metric = metric / metric.norm(dim=-1, keepdim=True)
         a, b = split(metric)
@@ -127,23 +127,11 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
     return merge, unmerge
 
 '''
-hidden tensor([ 0.0954363,  0.3521819, -0.1353313, -0.0054430], device='cuda:0')
-score tensor([0.7133359, 0.7488449, 0.6783174, 0.6451056], device='cuda:0')
-max tensor([0.7488449, 0.7886865, 0.7980256, 0.8085438], device='cuda:0')
-tensor([1, 2, 2, 3], device='cuda:0')
-hidden tensor([ 0.0516011, -0.8971321,  0.0351196, -0.7181754], device='cuda:0')
-score tensor([0.7151191, 0.6919521, 0.7272021, 0.7164218], device='cuda:0')
-max tensor([0.7859746, 0.7893220, 0.7628933, 0.8069919], device='cuda:0')
-tensor([22,  2, 14,  4], device='cuda:0')
-hidden tensor([-0.1359314, -0.1188316,  0.1302420,  0.1066350], device='cuda:0')
+max tensor([0.7330130, 0.5785772, 0.5666295, 0.5800563], device='cuda:0')
+tensor([36, 38, 39, 91], device='cuda:0')
+hidden tensor([ 0.0516011, -0.8971325,  0.0351195, -0.7181762], device='cuda:0')
 
-hidden tensor([ 0.0954363,  0.3521819, -0.1353313, -0.0054430], device='cuda:0')
-score tensor([0.7133359, 0.7488449, 0.6783174, 0.6451056], device='cuda:0')
-max tensor([0.7488449, 0.7886865, 0.7980256, 0.8085438], device='cuda:0')
-tensor([1, 2, 2, 3], device='cuda:0')
-hidden tensor([ 0.0516009, -0.8971320,  0.0351195, -0.7181755], device='cuda:0')
-score tensor([0.7151190, 0.6919520, 0.7272020, 0.7164217], device='cuda:0')
-max tensor([0.7859744, 0.7893220, 0.7628933, 0.8069919], device='cuda:0')
-tensor([22,  2, 14,  4], device='cuda:0')
-hidden tensor([-0.1359320, -0.1188321,  0.1302425,  0.1066353], device='cuda:0')
+max tensor([0.7330130, 0.5785772, 0.5666295, 0.5800563], device='cuda:0')
+tensor([36, 38, 39, 91], device='cuda:0')
+hidden tensor([ 0.0516011, -0.8971317,  0.0351197, -0.7181759], device='cuda:0')
 '''
