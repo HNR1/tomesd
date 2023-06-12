@@ -119,8 +119,8 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
             if self.use_ada_layer_norm_zero:
                 attn_output = gate_msa.unsqueeze(1) * attn_output
             # (3) ToMe u_a
-            print('post', hidden_states[0,0,:6])
             hidden_states = u_a(attn_output) + hidden_states
+            print('post', hidden_states[0,0,:6])
 
             if self.attn2 is not None:
                 norm_hidden_states = (
