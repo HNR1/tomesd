@@ -127,9 +127,11 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 norm_hidden_states = (
                     self.norm2(hidden_states, timestep) if self.use_ada_layer_norm else self.norm2(hidden_states)
                 )
+                print('n_hidden', norm_hidden_states[0,0,:6])
+
                 # (4) ToMe m_c
                 norm_hidden_states = m_c(norm_hidden_states)
-                print('n_hidden', norm_hidden_states[0,0,:6])
+
                 # 2. Cross-Attention
                 attn_output = self.attn2(
                     norm_hidden_states,
