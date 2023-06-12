@@ -98,8 +98,8 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
     def merge(x: torch.Tensor, mode="mean") -> torch.Tensor:
         torch.set_printoptions(precision=10)
-        print('merge', x[0,0,:4])
         src, dst = split(x)
+        print('merge', src[0,0,:4], dst[0,0,:4])
         n, t1, c = src.shape
 
         unm = gather(src, dim=-2, index=unm_idx.expand(n, t1 - r, c))
@@ -109,8 +109,6 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         return torch.cat([unm, dst], dim=1)
 
     def unmerge(x: torch.Tensor) -> torch.Tensor:
-        torch.set_printoptions(precision=10)
-        print('unmerge', x[0,0,:4])
         unm_len = unm_idx.shape[1]
         unm, dst = x[..., :unm_len, :], x[..., unm_len:, :]
         _, _, c = unm.shape
@@ -129,16 +127,10 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
 '''
 hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
-tensor([ 0.13570838, -0.10425681,  0.11335882, -0.00065479], device='cuda:0')
-tensor([[ 0.13570838, -0.10425681,  0.11335882, -0.00065479],
-        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000],
-        [ 0.14702998, -0.07123702,  0.08285293, -0.01936747],
-        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000]], device='cuda:0')
+merge tensor([ 0.2386467755,  0.8510968089, -0.6407168508,  0.0218548737], device='cuda:0')
+unmerge tensor([ 0.1357084066, -0.1042568162,  0.1133588329, -0.0006547794], device='cuda:0')
 
 hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
-tensor([ 0.13570839, -0.10425682,  0.11335880, -0.00065478], device='cuda:0')
-tensor([[ 0.13570839, -0.10425682,  0.11335880, -0.00065478],
-        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000],
-        [ 0.14703000, -0.07123704,  0.08285295, -0.01936747],
-        [ 0.00000000,  0.00000000,  0.00000000,  0.00000000]], device='cuda:0')
+merge tensor([ 0.2386467755,  0.8510968089, -0.6407168508,  0.0218548737],
+unmerge tensor([ 0.1357083917, -0.1042568237,  0.1133587956, -0.0006547868],
 '''
