@@ -92,7 +92,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
             class_labels=None,
         ) -> torch.Tensor:
             # (1) ToMe
-            torch.set_printoptions(precision=15)
+            torch.set_printoptions(precision=16)
             #print('hidden',hidden_states[0,0,:3])
             m_a, m_c, m_m, u_a, u_c, u_m = compute_merge(hidden_states, self._tome_info)
 
@@ -121,7 +121,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             # (3) ToMe u_a
             hidden_states = u_a(attn_output) + hidden_states
-            print('pre_n_hidden', norm_hidden_states[0,0,:3])
+            print('pre_n_hidden', norm_hidden_states[0,0,:6])
 
             if self.attn2 is not None:
                 norm_hidden_states = (
@@ -139,7 +139,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 )
                 # (5) ToMe u_c
                 hidden_states = u_c(attn_output) + hidden_states
-            print('n_hidden', norm_hidden_states[0,0,:3])
+            print('n_hidden', norm_hidden_states[0,0,:6])
             # 3. Feed-forward
             norm_hidden_states = self.norm3(hidden_states)
 
