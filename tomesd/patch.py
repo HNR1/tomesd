@@ -152,10 +152,10 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             if self.use_ada_layer_norm_zero:
                 ff_output = gate_mlp.unsqueeze(1) * ff_output
-
+            print('hidden_pre_ret', hidden_states[0,0,:3])
             # (7) ToMe u_m
             hidden_states = u_m(ff_output) + hidden_states
-            print('hidden_ret',hidden_states[0,0,:3])
+            print('hidden_ret', hidden_states[0,0,:3])
             return hidden_states
 
     return ToMeBlock
