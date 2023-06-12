@@ -118,9 +118,8 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
                 attn_output = gate_msa.unsqueeze(1) * attn_output
             # (3) ToMe u_a
             torch.set_printoptions(precision=12)
-            print('pre', hidden_states[0,0,:6])
+            print('attn', attn_output[0,0,:6])
             hidden_states = u_a(attn_output) + hidden_states
-            print('post', hidden_states[0,0,:6])
 
             if self.attn2 is not None:
                 norm_hidden_states = (
