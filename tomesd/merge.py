@@ -115,9 +115,10 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
         # Combine back to the original shape
         out = torch.zeros(B, N, c, device=x.device, dtype=x.dtype)
-        torch.set_printoptions(precision=8)
+        torch.set_printoptions(precision=10)
         out.scatter_(dim=-2, index=b_idx.expand(B, num_dst, c), src=dst)
         print(dst[0,0,:4])
+        print(dst[0,1,:4])
         print(out[0,:4,:4])
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=unm_idx).expand(B, unm_len, c), src=unm)
         out.scatter_(dim=-2, index=gather(a_idx.expand(B, a_idx.shape[1], 1), dim=1, index=src_idx).expand(B, r, c), src=src)
@@ -128,16 +129,16 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
 '''
 hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
-tensor([[ 0.13570842, -0.10425683,  0.11335882, -0.00065479],
+tensor([ 0.13570838, -0.10425681,  0.11335882, -0.00065479], device='cuda:0')
+tensor([[ 0.13570838, -0.10425681,  0.11335882, -0.00065479],
         [ 0.00000000,  0.00000000,  0.00000000,  0.00000000],
-        [ 0.14703000, -0.07123703,  0.08285294, -0.01936748],
+        [ 0.14702998, -0.07123702,  0.08285293, -0.01936747],
         [ 0.00000000,  0.00000000,  0.00000000,  0.00000000]], device='cuda:0')
-hidden tensor([ 0.05160071, -0.89713186,  0.03511934, -0.71817541], device='cuda:0')
 
 hidden tensor([ 0.09543633,  0.35218191, -0.13533133, -0.00544304], device='cuda:0')
-tensor([[ 0.13570842, -0.10425681,  0.11335881, -0.00065478],
+tensor([ 0.13570839, -0.10425682,  0.11335880, -0.00065478], device='cuda:0')
+tensor([[ 0.13570839, -0.10425682,  0.11335880, -0.00065478],
         [ 0.00000000,  0.00000000,  0.00000000,  0.00000000],
-        [ 0.14703000, -0.07123703,  0.08285293, -0.01936747],
+        [ 0.14703000, -0.07123704,  0.08285295, -0.01936747],
         [ 0.00000000,  0.00000000,  0.00000000,  0.00000000]], device='cuda:0')
-hidden tensor([ 0.05160107, -0.89713150,  0.03511929, -0.71817595], device='cuda:0')
 '''
