@@ -77,7 +77,6 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
     Make a patched class for a diffusers model.
     This patch applies ToMe to the forward function of the block.
     """
-    print(block_class)
     class ToMeBlock(block_class):
         # Save for unpatching later
         _parent = block_class
@@ -109,6 +108,10 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             # 1. Self-Attention
             cross_attention_kwargs = cross_attention_kwargs if cross_attention_kwargs is not None else {}
+            torch.set_printoptions(precision=10)
+            print('norm', norm_hidden_states[0,0,:6])
+            print('encoder', encoder_hidden_states[0,0,:6])
+            print('mask', attention_mask[0,0,:6])
             attn_output = self.attn1(
                 norm_hidden_states,
                 encoder_hidden_states=encoder_hidden_states if self.only_cross_attention else None,
