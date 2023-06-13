@@ -110,7 +110,8 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
             cross_attention_kwargs = cross_attention_kwargs if cross_attention_kwargs is not None else {}
             torch.set_printoptions(precision=10)
             print('norm', norm_hidden_states[0,0,:6])
-            print('encoder', encoder_hidden_states[0,0,:6])
+            if self.only_cross_attention:
+                print('encoder', encoder_hidden_states[0,0,:6])
             print('mask', attention_mask[0,0,:6])
             attn_output = self.attn1(
                 norm_hidden_states,
