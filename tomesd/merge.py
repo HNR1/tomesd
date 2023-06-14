@@ -110,8 +110,6 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         return ret
 
     def unmerge(x: torch.Tensor) -> torch.Tensor:
-        #torch.set_printoptions(precision=10)
-        #print('unmerge', x[0,0,:4])
         unm_len = unm_idx.shape[1]
         unm, dst = x[..., :unm_len, :], x[..., unm_len:, :]
         _, _, c = unm.shape
