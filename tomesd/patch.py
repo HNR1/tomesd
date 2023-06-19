@@ -152,7 +152,7 @@ def make_diffusers_tome_block(block_class: Type[torch.nn.Module]) -> Type[torch.
 
             # (7) ToMe u_m
             hidden_states = u_m(ff_output) + hidden_states
-            #print(hidden_states[0,0,:3])
+
             return hidden_states
 
     return ToMeBlock
