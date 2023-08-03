@@ -44,6 +44,7 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
     with torch.no_grad():
         hsy, wsx = h // sy, w // sx
+        print(hsy, wsx)
 
         # For each sy by sx kernel, randomly assign one token to be dst and the rest src
         if no_rand:
