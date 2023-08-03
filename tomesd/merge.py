@@ -65,6 +65,14 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
 
         # We set dst tokens to be -1 and src to be 0, so an argsort gives us dst|src indices
         rand_idx = idx_buffer.reshape(1, -1, 1).argsort(dim=1)
+        # idx_buffer.shape: torch.Size([96, 96])
+        ''' no_rand=True
+        [-1,  0, -1,  0],
+        [ 0,  0,  0,  0],
+        [-1,  0, -1,  0],
+        [ 0,  0,  0,  0]'''
+        # rand_idx.shape: torch.Size([1, 9216, 1])
+        # tensor([[[0],[2],[4],[6],...,[92],[94],[192],[194],...]])
 
         # We're finished with these
         del idx_buffer, idx_buffer_view
@@ -72,18 +80,30 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
         # rand_idx is currently dst|src, so split them
         num_dst = hsy * wsx
         a_idx = rand_idx[:, num_dst:, :] # src
+        # a_idx.shape: torch.Size([1, 6912, 1])
+        # indices of -1
+        # tensor([[[1],[3],[5],[7],...]]
         b_idx = rand_idx[:, :num_dst, :] # dst
+        # indices of 0
+        # tensor([[[0],[2],[4],[6],...]]
 
         def split(x):
             C = x.shape[-1]
+            # x.shape: torch.Size([2, 9216, 320]) (x=metric)
             src = gather(x, dim=1, index=a_idx.expand(B, N - num_dst, C))
+            # src.shape: torch.Size([2, 6912, 320])
             dst = gather(x, dim=1, index=b_idx.expand(B, num_dst, C))
+            # dst.shape: torch.Size([2, 2304, 320])
             return src, dst
 
         # Cosine similarity between A and B
         metric = metric / metric.norm(dim=-1, keepdim=True)
         a, b = split(metric)
+        # a.shape: torch.Size([2, 6912, 320])
+        # b.shape: torch.Size([2, 2304, 320])
+        # b.transpose(-1, -2).shape: torch.Size([2, 320, 2304])
         scores = a @ b.transpose(-1, -2)
+        # scores.shape: torch.Size([2, 6912, 2304])
 
         # Can't reduce more than the # tokens in src
         r = min(a.shape[1], r)
