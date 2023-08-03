@@ -43,8 +43,10 @@ def bipartite_soft_matching_random2d(metric: torch.Tensor,
     gather = mps_gather_workaround if metric.device.type == "mps" else torch.gather
 
     with torch.no_grad():
+        # h, w = 96, 96
+        # sx, sy = 2, 2
         hsy, wsx = h // sy, w // sx
-        print(hsy, wsx)
+        # hsy, wsx = 48, 48
 
         # For each sy by sx kernel, randomly assign one token to be dst and the rest src
         if no_rand:
